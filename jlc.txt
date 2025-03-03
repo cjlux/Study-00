@@ -1,0 +1,5 @@
+mkdir Study-00
+cd Study-00
+uv init
+uv add ...
+
