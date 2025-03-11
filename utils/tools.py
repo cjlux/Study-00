@@ -9,6 +9,7 @@ from seaborn import heatmap
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.model_selection import train_test_split
 from time import time
+from cpuinfo import get_cpu_info
 
 def display_history_stat(hist:list):
     metrics = ('accuracy', 'loss', 'val_accuracy', 'val_loss')
@@ -101,7 +102,8 @@ def plot_loss_accuracy(hist:list,
                        max_epoch:float = None,
                        min_acc:float=None,  max_acc:float=None, min_loss:float=None, max_loss:float=None, 
                        training:bool=True, 
-                       single_legend:bool= True):
+                       single_legend:bool= True,
+                       figsize=(15,5)):
     '''
     Plot training & validation loss & accuracy values, giving an argument
     'hist' of type 'tensorflow.python.keras.callbacks.History'. 
@@ -110,9 +112,7 @@ def plot_loss_accuracy(hist:list,
     custom_lines = [Line2D([0], [0], color='blue', lw=1, marker='o'),
                     Line2D([0], [0], color='orange', lw=1, marker='o')]
     val_colors = ('orange', 'gold', 'goldenrod', 'darkgoldenrod', 'lightcoral', 'firebrick')
-    
-    plt.figure(figsize=(15,5))
-    
+        
     if not isinstance(hist, list): hist = [hist]
 
     if max_epoch is None:
@@ -120,8 +120,10 @@ def plot_loss_accuracy(hist:list,
     else:
         epoch_array = np.arange(1, max_epoch+1)
     nb_epoch = len(epoch_array)
-    
-    ax1 = plt.subplot(1,2,1)
+
+    fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=figsize)
+    fig.suptitle(f'Model trained on {get_cpu_info()['brand_raw']}')
+
     for (i, h) in enumerate(hist):
         if h.history.get('accuracy') and training:
             ax1.plot(epoch_array, h.history['accuracy'][:nb_epoch], 'o-', markersize=4,
@@ -147,7 +149,6 @@ def plot_loss_accuracy(hist:list,
     
     
     # Plot training & validation loss values
-    ax2 = plt.subplot(1,2,2)
     for (i, h) in enumerate(hist):
         if h.history.get('loss') and training:
             ax2.plot(epoch_array, h.history['loss'][:nb_epoch], 'o-', markersize=4,
