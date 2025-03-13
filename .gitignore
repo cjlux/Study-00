@@ -5,7 +5,8 @@ build/
 dist/
 wheels/
 *.egg-info
-.ipynb_checkpoints/
+./.ipynb_checkpoints/
+./utils/.ipynb_checkpoints/
 
 # Project files
 weights/

@@ -122,7 +122,7 @@ def plot_loss_accuracy(hist:list,
     nb_epoch = len(epoch_array)
 
     fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=figsize)
-    fig.suptitle(f'Model trained on {get_cpu_info()['brand_raw']}')
+    fig.suptitle(f"Model trained on {get_cpu_info()['brand_raw']}")
 
     for (i, h) in enumerate(hist):
         if h.history.get('accuracy') and training:
